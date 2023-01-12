@@ -47,6 +47,7 @@ public class Radix {
     }
 
     private static String decode(long num, String removedLetter, int radix) {
+        checkDecodeValue(num);
         Map<Integer, String> dynamicVal = removedLetter(removedLetter, radix);
         StringBuilder result = new StringBuilder();
         while (num > 0) {
@@ -61,6 +62,7 @@ public class Radix {
     }
 
     private static Map<Integer, String> removedLetter(String letter, int radix) {
+        checkRemovedLetter(letter);
         List<String> alphabet;
         if (radix == 26) {
             alphabet = new ArrayList<>(initialAlphabet());
@@ -115,5 +117,20 @@ public class Radix {
 
     private static String getValue(int letter, Map<Integer, String> removedLetter) {
         return removedLetter.get(letter);
+    }
+
+    private static void checkRemovedLetter(String removedLetter) {
+        if (removedLetter != null && removedLetter.length() > 25) {
+            throw new IllegalArgumentException("You cannot removed all letter");
+        }
+        if (removedLetter != null && removedLetter.length() > 0 && !removedLetter.matches("^[A-Z]+$")) {
+            throw new IllegalArgumentException("Unsupported alphabet");
+        }
+    }
+
+    private static void checkDecodeValue(long val) {
+        if (val < 0) {
+            throw new IllegalArgumentException("Bad decode value");
+        }
     }
 }
